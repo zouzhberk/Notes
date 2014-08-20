@@ -93,5 +93,13 @@ $ su
 # export PREFIX=/usr/lib
 # make install
 
-4. 
-4. 
+4. 创建初始数据库
+
+help
+./build/env/bin/hue  help syncdb
+./build/env/bin/hue  syncdb  #将在desktop/desktop.db中产生数据库
+
+
+
+
+
