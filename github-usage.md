@@ -32,4 +32,11 @@ git fetch origin branch-3.6 # 将 本地分支release-3.6.0-x指向远程分支 
 git merge cloudera/master  #将本地分支（dev）与远程分支cloudera（master）进行合并
 
 git push origin dev 将本地分支(dev) 上传到远程分支origin dev(如果远程没有dev 分支将新建)
+
+```
+###回到某一个TAG
+```
+git reset --soft release-3.6.0
+
+将当前版本回退到tag release-3.6.0
 ```
