@@ -103,3 +103,22 @@ help
 
 
 
+5  创建新的应用
+cd hue
+/build/env/bin/hue create_desktop_app calculator
+
+./build/env/bin/python tools/app_reg/app_reg.py --install calculator
+
+#查看已经注册应用
+./build/env/bin/python tools/app_reg/app_reg.py --list 2>&1 | grep calculator
+
+#prod版本hue不存在Werkezeug ，需要手动拷贝过去
+sudo cp -rfp Werkzeug-0.6-py2.6.egg  /usr/lib/hue/build/env/lib/python2.6/site-packages/
+build/env/bin/hue runserver_plus
+
+#更新easy-install.pth
+echo "Werkzeug-0.6-py2.6.egg" >> easy-install.pth
+
+#启动服务
+ /usr/lib/hue/build/env/bin/hue runcherrypyserver
+
