@@ -40,3 +40,31 @@ git reset --soft release-3.6.0
 
 将当前版本回退到tag release-3.6.0
 ```
+
+
+
+
+
+=============================
+同步 一个远程分支
+
+git remote -v
+
+git remote add ooyala https://github.com/ooyala/spark-jobserver.git
+
+git remote -v
+
+
+git fetch ooyala
+
+
+git branch -va
+
+
+git checkout master
+
+
+git merge ooyala/master
+
+git push origin master
+
