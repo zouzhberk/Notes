@@ -1,0 +1,5 @@
+1. 后台启动docker
+
+sudo docker run -i -t -d ubuntu:latest
+
+
