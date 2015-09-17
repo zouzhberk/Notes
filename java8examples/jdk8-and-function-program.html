@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>JDK8-and-functional-program</title>
+		<style>
+			body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h1, h2, h3 {
+	font-weight: 400;
+	margin-bottom: 0;
+}
+.remark-slide-content h1 { font-size: 3em; }
+.remark-slide-content h2 { font-size: 2em; }
+.remark-slide-content h3 { font-size: 1.6em; }
+.footnote {
+	position: absolute;
+	bottom: 3em;
+}
+li p { line-height: 1.25em; }
+.red { color: #fa0000; }
+.large { font-size: 2em; }
+a, a > code {
+	color: rgb(249, 38, 114);
+	text-decoration: none;
+}
+code {
+	background: none repeat scroll 0 0 #F8F8FF;
+  border: 1px solid #DEDEDE;
+  border-radius: 3px 	;
+  padding: 0 0.2em;
+}
+.remark-code, .remark-inline-code { font-family: "Bitstream Vera Sans Mono", "Courier", monospace; }
+.remark-code-line-highlighted     { background-color: #373832; }
+.pull-left {
+	float: left;
+	width: 47%;
+}
+.pull-right {
+	float: right;
+	width: 47%;
+}
+.pull-right ~ p {
+	clear: both;
+}
+#slideshow .slide .content code {
+	font-size: 0.8em;
+}
+#slideshow .slide .content pre code {
+	font-size: 0.9em;
+	padding: 15px;
+}
+.main-title, .title {
+	background: #272822;
+	color: #777872;
+	text-shadow: 0 0 20px #333;
+}
+.title h1, .title h2, .main-title h1, .main-title h2 {
+	color: #f3f3f3;
+	line-height: 0.8em;
+}
+/* Custom */
+.remark-code {
+	display: block;
+	padding: 0.5em;
+}
+
+		</style>
+	</head>
+	<body>
+		<textarea id="source">
+class: center, middle, inverse
+
+#Java8与函数式编程思维
+
+## Berk
+## 9/18/2015
+
+---
+
+
+## Jdk 8 语言新特性
+
+- Lambda表达式与Functional接口
+
+
+
+>为了克服函数式接口的这种脆弱性并且能够明确声明接口作为函数式接口的意图，Java 8增加了一种特殊的注解@FunctionalInterface（Java 8中所有类库的已有接口都添加了@FunctionalInterface注解）
+
+- 接口的默认方法与静态方法
+
+
+- 方法引用
+  - 构造器引用 （Class< T >::new）
+  - 静态方法引用 （Class::static_method）
+  - 特定类的任意对象的方法引用（Class::method）
+  - 特定对象的方法引用（instance::method）
+
+- 注解功能扩展
+  - 重复注解：通过@Repeatable注解目标注解，目标注解可以重复注解；
+  - 扩展注解的支持：任何东西添加注解：局部变量、泛型类、父类与接口的实现，就连方法的异常也能添加注解。
+
+- 更好的类型推测机制
+
+---
+
+## Jdk 8类库的新特新
+
+### Optional
+
+### Stream API
+
+### Date/Time API
+
+
+
+>> http://www.codeceo.com/article/java-8-date-time-api.html
+
+### JavaScript引擎Nashorn
+
+### 其它
+Files 
+Base64
+
+
+
+---
+
+## Java8中的函数编程思维
+
+---
+
+## Reference
+
+[1] [Java8新特性]<http://www.importnew.com/11908.html#NewFeatureOfLanguage>
+
+[2] [What's New in JDK 8](http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html)
+
+[3] [Java 8 日期/时间（Date Time）API指南](http://www.codeceo.com/article/java-8-date-time-api.html)
+
+		</textarea>
+		<script src="http://gnab.github.io/remark/downloads/remark-latest.min.js"></script>
+		<script>
+			var slideshow = remark.create();
+		</script>
+		<script></script>
+	</body>
+</html>
