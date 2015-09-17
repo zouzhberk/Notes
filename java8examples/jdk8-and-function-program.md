@@ -1,5 +1,10 @@
-Java8与函数式编程思维
-================
+class: center, middle, inverse
+
+#Java8与函数式编程思维
+## Berk
+## 9/18/2015
+
+---
 
 ##Java 8 语言新特性
 - Lambda表达式与Functional接口
@@ -21,6 +26,8 @@ Java8与函数式编程思维
 
 - 更好的类型推测机制
 
+---
+
 ## Java8 类库的新特新
 ### Optional
 
@@ -37,4 +44,8 @@ Base64
 
 [1](Java8新特性)<http://www.importnew.com/11908.html#NewFeatureOfLanguage>
 
+---
+
 ## Java8中的函数编程思维
+
+---
