@@ -8,7 +8,8 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD})
+
 @Repeatable(Tests.class)
 public @interface Test
 {

@@ -8,11 +8,13 @@ class: center, middle, inverse
 ---
 
 
-## Jdk 8 语言新特性
+## JDK 8 语言新特性
 
 - Lambda表达式与Functional接口
 
+'''
 
+'''
 
 >为了克服函数式接口的这种脆弱性并且能够明确声明接口作为函数式接口的意图，Java 8增加了一种特殊的注解@FunctionalInterface（Java 8中所有类库的已有接口都添加了@FunctionalInterface注解）
 
@@ -33,7 +35,7 @@ class: center, middle, inverse
 
 ---
 
-## Jdk 8类库的新特新
+## JDK 8类库的新特新
 
 ### Optional
 
@@ -59,8 +61,6 @@ class: center, middle, inverse
 ### 其它
 Files 
 Base64
-
-
 
 ---
 

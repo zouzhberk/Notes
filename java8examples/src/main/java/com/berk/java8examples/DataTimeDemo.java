@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.stream.Stream;
 
 /**
  * Created by berk on 9/16/15.
@@ -19,16 +19,22 @@ import java.util.stream.Stream;
 public class DataTimeDemo
 {
 
-    private final String DATE_PATTERN = "[yyyy-MM/dd:HH";
+    private final static String DATE_PATTERN = "[yyyy-MM/dd:HH";
+    private final static String DATE_PATTERN2 = "yyyy-MM/dd:HH";
+    private final static String DATE_TIME_STR_INPUT = "[2015-12/23:13";
 
-    private final String DATE_TIME_STR_INPUT = "[2015-12/23:13";
 
-
-    @Test
-    public void parseDateTimeStrNew()
+    @Test(DATE_PATTERN)
+    @Test(DATE_PATTERN2)
+    public void parseDateTimeStrNew(String pattern, int arg2)
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
-        LocalDate t1 = LocalDate.parse(DATE_TIME_STR_INPUT, formatter);
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+
+        TemporalAccessor out1 = formatter.parse(DATE_TIME_STR_INPUT);
+        System.out.println(LocalDateTime.from(out1));
+        LocalDateTime t1 = LocalDateTime.parse(DATE_TIME_STR_INPUT, formatter);
 
         System.out.println("berk" + t1);
 
@@ -38,8 +44,7 @@ public class DataTimeDemo
     public void parseDateTimeStrOld() throws ParseException
     {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
-        Date datetime = null;
-        datetime = sdf.parse(DATE_TIME_STR_INPUT);
+        Date datetime = sdf.parse(DATE_TIME_STR_INPUT);
         System.out.println("Output:");
         System.out.println(datetime);
     }
@@ -50,14 +55,18 @@ public class DataTimeDemo
     {
         LocalTime time = LocalTime.of(18, 40, 32);
         LocalDate date = LocalDate.of(2015, Month.SEPTEMBER, 18);
-
         LocalDateTime datetime = LocalDateTime.of(2015, 9, 18, 18, 40, 32);
-
         System.out.println(time);
         System.out.println(date);
         System.out.println(datetime);
+    }
+
+    @Test
+    public void nowDateNew()
+    {
 
     }
+
 
     @Test
     public void createDateOld()
@@ -68,12 +77,4 @@ public class DataTimeDemo
 
     }
 
-
-    public static void main(String[] args)
-    {
-        Stream.of(DataTimeDemo.class.getMethods())
-                .filter((x) -> x.getAnnotation(Test.class) != null)
-                .filter((x) -> x.getAnnotation(Ignore.class) == null)
-                .forEach(System.out::println);
-    }
 }
