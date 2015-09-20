@@ -66,6 +66,18 @@ Base64
 
 ## Java8中的函数编程思维
 
+### 表达式与变换
+函数式编程将代码表达为表达式与变换，其中三个主要变换为：
+
+- Filter(筛选)
+- Map（映射）
+
+- Fold/Reduce(折叠/化约)：都是通过一个累积量来收集集合元素
+
+### 高阶函数与闭包
+
+
+expression and transform
 ---
 
 ## Reference
