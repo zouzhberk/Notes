@@ -1,12 +1,50 @@
 class: center, middle, inverse
 
-#Java8与函数式编程思维
+# Java8与函数式编程思维
 
-## Berk
-## 9/18/2015
+### Berk
+### 9/18/2015
 
 ---
 
+## JDK8 中的函数编程
+
+### Lambda 表达式与方法引用
+
+
+```java
+
+//F(x) = x+2
+
+F f = x -> x + 2;
+
+```
+
+### 使用集合（Stream API）
+
+####
+
+### String 处理
+
+### 使用资源
+
+
+### Being Lazy
+
+
+## 函数式编程基本原则
+
+### 避免可变状态
+
+### 函数是第一类值（Functions as First-Class Values）
+意味着函数可以像参数一样传输可以返回
+
+
+
+---
+
+
+# 附录：
 
 ## JDK 8 语言新特性
 
@@ -64,17 +102,52 @@ Base64
 
 ---
 
-## Java8中的函数编程思维
+# Java8中的函数编程思维
+
+一种编程范式
+
+## 函数式编程基本原则
+
+### 避免可变状态
+
+### 函数是第一类值（Functions as First-Class Values）
+意味着函数可以像参数一样传输可以返回
+
+
+
+### 支持懒惰计算（lazy evaluation）；
+
+### 使用递归作为控制流程的机制；
+
+### 加强了引用透明性；
+
+### 没有副作用（Side-Effect）；
+
+
+
 
 ### 表达式与变换
-函数式编程将代码表达为表达式与变换，其中三个主要变换为：
+函数式编程将程序表达为表达式与变换，以数学方程形式建立模型，并尽量避免可变状态，其中三个主要变换为：
+
+'''
+
+逻辑 --> 变换
+
+'''
 
 - Filter(筛选)
+
+
 - Map（映射）
+
 
 - Fold/Reduce(折叠/化约)：都是通过一个累积量来收集集合元素
 
-### 高阶函数与闭包
+
+### 高阶函数与闭包(Higher-order function & Closure)
+
+
+
 
 
 expression and transform
@@ -89,3 +162,7 @@ expression and transform
 [3] [Java 8 日期/时间（Date Time）API指南](http://www.codeceo.com/article/java-8-date-time-api.html)
 
 http://www.javacodegeeks.com/2014/04/java-8-date-time-api-tutorial-localdatetime.html
+
+http://rogachev.dlinkddns.com:8080/Copy/Computing/functional_programming_for_java_developers.pdf
+
+http://cfile28.uf.tistory.com/attach/250C874B52DCD4A20F56B7
