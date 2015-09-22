@@ -9,9 +9,11 @@ class: center, middle, inverse
 
 
 ---
+
 class: center, middle, inverse
 
 ## JDK8 中的函数式编程
+
 
 ---
 
@@ -19,7 +21,6 @@ class: center, middle, inverse
 
 
 ```java
-
 //Consumer使用 @FunctionalInterface 明确声明接口作为函数式接口.
 Consumer<String> consumer1 = new Consumer<String>()
 {
@@ -44,11 +45,9 @@ Stream.of("hello", "world").forEach(consumer3);
 Stream.of("hello", "world").forEach(consumer4);
 Stream.of("hello", "world").forEach(consumer5);
 
-
 ```
 
 ---
-
 
 ### 方法引用(Method Reference)
 
@@ -81,6 +80,7 @@ BigDecimal ret = Stream.of("hello", "world", "!")
         .reduce(new BigDecimal(1), BigDecimal::add);
 ```
 
+
 ---
 
 ### 使用集合(1)
@@ -89,15 +89,12 @@ BigDecimal ret = Stream.of("hello", "world", "!")
 - 迭代(forEach)
 
 ```java
-
 final List<String> friends = Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara", "Scott");
-
 //Old way.
 for (String friend : friends)
 {
     System.out.println(friend);
 }
-
 //New way.
 friends.forEach(name -> System.out.println(name));
 
@@ -106,18 +103,64 @@ friends.forEach(name -> System.out.println(name));
 - 转换 (map)
 
 ```java
+//Old way.
+List<String> uppercaseNames = new ArrayList<String>();
+for (String name : friends)
+{
+    uppercaseNames.add(name.toUpperCase());
+}
+System.out.println(uppercaseNames);
+//New way.
+uppercaseNames = friends.stream().map(String::toUpperCase)
+                        .collect(Collectors.toList());
+System.out.println(uppercaseNames);
 
 ```
-
-
-- 筛选(filter)
-
-
 ---
 
 ### 使用集合(2)
 
-- 聚合操作
+- 筛选(filter)
+
+```java
+//Old way.
+for (String name : friends){
+    if (name.contains("r") && name.contains("a")) 
+        System.out.println(name);    
+}
+//New way.
+friends.stream().filter((s) -> s.contains("r"))
+       .filter((s) -> s.contains("a")).forEach(System.out::println);
+```
+
+- 元素选取(findFirst/findAny)
+
+```java
+//Old way
+String foundName = null;
+for (String name : friends){
+    if (name.startsWith("N")){
+        foundName = name;
+        break;
+    }
+}
+if (foundName == null) throw new NoSuchElementException("no name found.");
+System.out.println(foundName);
+//New way.
+friends.stream().filter((s) -> s.startsWith("N")).findFirst()
+       .ifPresent(System.out::println);
+```
+
+---
+
+### 使用集合(3)
+
+- 聚合操作(reduce/collect)
+    - 统计量(sum,average,max,min,count)
+
+    - To Java Map
+
+    - Group By
 
 ---
 

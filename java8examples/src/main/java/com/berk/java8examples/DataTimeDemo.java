@@ -18,7 +18,8 @@ import java.util.Locale;
 /**
  * Created by berk on 9/16/15.
  */
-public class DataTimeDemo
+public
+class DataTimeDemo
 {
 
     private final static String DATE_PATTERN = "[yyyy-MM/dd:HH";
@@ -28,7 +29,8 @@ public class DataTimeDemo
 
     @Test(DATE_PATTERN)
     @Test(DATE_PATTERN2)
-    public void parseDateTimeStrNew(String pattern, int arg2)
+    public
+    void parseDateTimeStrNew(String pattern, int arg2)
     {
 
 
@@ -36,14 +38,16 @@ public class DataTimeDemo
 
         TemporalAccessor out1 = formatter.parse(DATE_TIME_STR_INPUT);
         System.out.println(LocalDateTime.from(out1));
-        LocalDateTime t1 = LocalDateTime.parse(DATE_TIME_STR_INPUT, formatter);
+        LocalDateTime t1 =
+                LocalDateTime.parse(DATE_TIME_STR_INPUT, formatter);
 
         System.out.println("berk" + t1);
 
     }
 
     @Test
-    public void parseDateTimeStrOld() throws ParseException
+    public
+    void parseDateTimeStrOld() throws ParseException
     {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
         Date datetime = sdf.parse(DATE_TIME_STR_INPUT);
@@ -53,7 +57,8 @@ public class DataTimeDemo
 
 
     @Test
-    public void createDateNew()
+    public
+    void createDateNew()
     {
         LocalTime time = LocalTime.of(18, 40, 32);
         LocalDate date = LocalDate.of(2015, Month.SEPTEMBER, 18);
@@ -64,14 +69,16 @@ public class DataTimeDemo
     }
 
     @Test
-    public void nowDateNew()
+    public
+    void nowDateNew()
     {
 
     }
 
 
     @Test
-    public void createDateOld()
+    public
+    void createDateOld()
     {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.set(2015, 9, 18, 18, 40, 32);

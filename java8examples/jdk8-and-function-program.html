@@ -16,7 +16,8 @@ h1, h2, h3 {
 .remark-slide-content h3 { font-size: 1.6em; }
 .footnote {
 	position: absolute;
-	bottom: 3em;
+	bottom: 1em;
+	/*bottom: 3em;*/
 }
 li p { line-height: 1.25em; }
 .red { color: #fa0000; }
@@ -49,7 +50,8 @@ code {
 }
 #slideshow .slide .content pre code {
 	font-size: 0.9em;
-	padding: 15px;
+	padding: 10px;
+/*	#padding: 15px; */
 }
 .main-title, .title {
 	background: #272822;
@@ -81,9 +83,11 @@ class: center, middle, inverse
 
 
 ---
+
 class: center, middle, inverse
 
 ## JDK8 中的函数式编程
+
 
 ---
 
@@ -91,7 +95,6 @@ class: center, middle, inverse
 
 
 ```java
-
 //Consumer使用 @FunctionalInterface 明确声明接口作为函数式接口.
 Consumer<String> consumer1 = new Consumer<String>()
 {
@@ -116,11 +119,9 @@ Stream.of("hello", "world").forEach(consumer3);
 Stream.of("hello", "world").forEach(consumer4);
 Stream.of("hello", "world").forEach(consumer5);
 
-
 ```
 
 ---
-
 
 ### 方法引用(Method Reference)
 
@@ -153,27 +154,21 @@ BigDecimal ret = Stream.of("hello", "world", "!")
         .reduce(new BigDecimal(1), BigDecimal::add);
 ```
 
+
 ---
 
 ### 使用集合(1)
 
-```
-Map
-
-```
 
 - 迭代(forEach)
 
 ```java
-
 final List<String> friends = Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara", "Scott");
-
 //Old way.
 for (String friend : friends)
 {
     System.out.println(friend);
 }
-
 //New way.
 friends.forEach(name -> System.out.println(name));
 
@@ -182,16 +177,57 @@ friends.forEach(name -> System.out.println(name));
 - 转换 (map)
 
 ```java
+//Old way.
+List<String> uppercaseNames = new ArrayList<String>();
+for (String name : friends)
+{
+    uppercaseNames.add(name.toUpperCase());
+}
+System.out.println(uppercaseNames);
+//New way.
+uppercaseNames = friends.stream().map(String::toUpperCase)
+                        .collect(Collectors.toList());
+System.out.println(uppercaseNames);
 
 ```
-
-
-- 筛选(filter)
-
-
 ---
 
 ### 使用集合(2)
+
+- 筛选(filter)
+
+```java
+//Old way.
+for (String name : friends){
+    if (name.contains("r") && name.contains("a")) 
+        System.out.println(name);    
+}
+//New way.
+friends.stream().filter((s) -> s.contains("r"))
+       .filter((s) -> s.contains("a")).forEach(System.out::println);
+```
+
+- 元素选取(findFirst/findAny)
+
+```java
+//Old way
+String foundName = null;
+for (String name : friends){
+    if (name.startsWith("N")){
+        foundName = name;
+        break;
+    }
+}
+if (foundName == null) throw new NoSuchElementException("no name found.");
+System.out.println(foundName);
+//New way.
+friends.stream().filter((s) -> s.startsWith("N")).findFirst()
+       .ifPresent(System.out::println);
+```
+
+---
+
+### 使用集合(3)
 
 - 聚合操作
 
@@ -343,6 +379,7 @@ http://www.javacodegeeks.com/2014/04/java-8-date-time-api-tutorial-localdatetime
 http://rogachev.dlinkddns.com:8080/Copy/Computing/functional_programming_for_java_developers.pdf
 
 http://cfile28.uf.tistory.com/attach/250C874B52DCD4A20F56B7
+
 		</textarea>
 		<script src="http://gnab.github.io/remark/downloads/remark-latest.min.js"></script>
 		<script>
