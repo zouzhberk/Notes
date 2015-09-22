@@ -88,9 +88,26 @@ BigDecimal ret = Stream.of("hello", "world", "!")
 
 - 迭代(forEach)
 
+```java
+
+final List<String> friends = Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara", "Scott");
+
+//Old way.
+for (String friend : friends)
+{
+    System.out.println(friend);
+}
+
+//New way.
+friends.forEach(name -> System.out.println(name));
+
+```
 
 - 转换 (map)
 
+```java
+
+```
 
 
 - 筛选(filter)
@@ -100,7 +117,8 @@ BigDecimal ret = Stream.of("hello", "world", "!")
 
 ### 使用集合(2)
 
-- reduce/fold
+- 聚合操作
+
 ---
 
 ### String 处理

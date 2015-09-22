@@ -91,6 +91,7 @@ class: center, middle, inverse
 
 
 ```java
+
 //Consumer使用 @FunctionalInterface 明确声明接口作为函数式接口.
 Consumer<String> consumer1 = new Consumer<String>()
 {
@@ -156,16 +157,43 @@ BigDecimal ret = Stream.of("hello", "world", "!")
 
 ### 使用集合(1)
 
-- 迭代
+```
+Map
 
-- 转换
+```
 
--
+- 迭代(forEach)
+
+```java
+
+final List<String> friends = Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara", "Scott");
+
+//Old way.
+for (String friend : friends)
+{
+    System.out.println(friend);
+}
+
+//New way.
+friends.forEach(name -> System.out.println(name));
+
+```
+
+- 转换 (map)
+
+```java
+
+```
+
+
+- 筛选(filter)
+
 
 ---
 
 ### 使用集合(2)
 
+- 聚合操作
 
 ---
 

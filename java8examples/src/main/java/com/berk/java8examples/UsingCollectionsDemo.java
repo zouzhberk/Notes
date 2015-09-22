@@ -23,7 +23,8 @@ public class UsingCollectionsDemo extends Tester
     @Test
     public void testIteratingList()
     {
-        final List<String> friends = Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara", "Scott");
+        final List<String> friends = Arrays.asList("Brian", "Nate", "Neal",
+                "Raju", "Sara", "Scott");
 
         //OLD Style 1
         for (int i = 0; i < friends.size(); i++)
@@ -56,15 +57,32 @@ public class UsingCollectionsDemo extends Tester
 
     }
 
+    @Test
+    public void testMap()
+    {
+        final List<String> friends = Arrays.asList("Brian", "Nate", "Neal",
+                "Raju", "Sara", "Scott");
 
+        //Old way.
+        final List<String> uppercaseNames = new ArrayList<String>();
+        for (String name : friends)
+        {
+            uppercaseNames.add(name.toUpperCase());
+        }
+
+        friends.stream().map(String::toUpperCase).forEach(uppercaseNames::add);
+
+    }
 
 
     public void testNewStream()
     {
+
         String regex = "\\w+";
 
 
-        Matcher m = Pattern.compile(regex).matcher(UsingCollectionsDemo.TEST_STR);
+        Matcher m = Pattern.compile(regex)
+                .matcher(UsingCollectionsDemo.TEST_STR);
 
         Spliterator<String[]> spliter = new PatternSpliterator(m);
         StreamSupport.stream(spliter, false);
@@ -76,10 +94,12 @@ public class UsingCollectionsDemo extends Tester
             "import java util regex Pattern ;\n" +
             "import java.util.stream.Stream;";
 
-    private final static List<String> NON_WORDS = Arrays.asList("the", "and", "of", "to", "be", "util");
+    private final static List<String> NON_WORDS = Arrays.asList("the", "and",
+            "of", "to", "be", "util");
 
 
-    private static Stream<String> regexToListUsingStream(String words, String regex)
+    private static Stream<String> regexToListUsingStream(String words, String
+            regex)
     {
         Matcher m = Pattern.compile(regex).matcher(words);
 
@@ -110,10 +130,13 @@ public class UsingCollectionsDemo extends Tester
     {
         String regex = "\\w+";
 
-        regexToListUsingStream(UsingCollectionsDemo.TEST_STR, regex).limit(20).forEach(System.out::println);
+        regexToListUsingStream(UsingCollectionsDemo.TEST_STR, regex).limit(20)
+                .forEach(System.out::println);
 
 
-        Map<String, Integer> map = regexToListOLD(UsingCollectionsDemo.TEST_STR, "\\w+").map(w -> w.toLowerCase())
+        Map<String, Integer> map = regexToListOLD(UsingCollectionsDemo
+                .TEST_STR, "\\w+")
+                .map(w -> w.toLowerCase())
                 .peek(System.out::println)
                 .filter(w -> !NON_WORDS.contains(w))
                 .collect(groupingBy(String::new, summingInt(x -> 1)));
@@ -128,7 +151,8 @@ public class UsingCollectionsDemo extends Tester
     }
 
 
-    private static class PatternSpliterator extends Spliterators.AbstractSpliterator<String[]>
+    private static class PatternSpliterator extends Spliterators
+            .AbstractSpliterator<String[]>
     {
         private final Matcher matcher;
 
