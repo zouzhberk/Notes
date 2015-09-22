@@ -81,26 +81,10 @@ public class Tester
 
     public static void main(String[] args) throws Exception
     {
-
-        int a = 2;
-
-
-//        Optional<Method> method = Stream.of(DataTimeDemo.class.getMethods())
-//                .filter((x) -> x.getName().indexOf("parseDateTimeStrNew") >= 0)
-//                .findFirst();
-//        Test[] tests = method.get().getAnnotationsByType(Test.class);
-//
-//
-//        Stream.of(tests).map(x -> x.value()).forEach((params) -> {
-//                    System.out.println(Arrays.toString(params));
-//                }
-//
-//        );
-        //Stream.of(method.get().getParameters()).reduce()
-        //   Stream.concat(Stream.of(method.get().getParameters()), Stream.of(tests[0])).forEach(System.out::println);
-
-//        Stream.of(method.get().getParameters()).map((x) -> x.getType()).forEach(System.out::println);
-//        //new Tester().execute(DataTimeDemo.class);
+        if (new Tester().execute())
+        {
+            return;
+        }
 
         Stream.of(LambdaDemo.class, UsingCollectionsDemo.class, UsingResourceDemo.class, DataTimeDemo.class)
                 .filter((x) -> x.getAnnotation(Ignore.class) != null)
@@ -115,6 +99,18 @@ public class Tester
         });
 
     }
+
+    public boolean execute()
+    {
+        if (!this.getClass().equals(Tester.class))
+        {
+            execute(this.getClass());
+            return true;
+        }
+
+        return false;
+    }
+
 
     public static void execute(Class<?> clazz)
     {

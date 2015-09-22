@@ -1,36 +1,119 @@
 class: center, middle, inverse
 
-# Java8与函数式编程思维
+# JDK8 中的函数式编程
 
 ### Berk
-### 9/18/2015
+### 9/23/2015
+
+
+
+
+---
+class: center, middle, inverse
+
+## JDK8 中的函数式编程
 
 ---
 
-## JDK8 中的函数编程
-
-### Lambda 表达式与方法引用
+### Lambda 表达式
 
 
 ```java
 
-//F(x) = x+2
+//Consumer使用 @FunctionalInterface 明确声明接口作为函数式接口.
+Consumer<String> consumer1 = new Consumer<String>()
+{
+    public void accept(final String name)
+    {
+        System.out.println(name);
+    }
+};
 
-F f = x -> x + 2;
+Consumer<String> consumer2 = (final String name) -> System.out
+        .println(name);
+
+Consumer<String> consumer3 = (name) -> System.out.println(name);
+
+Consumer<String> consumer4 = name -> System.out.println(name);
+
+Consumer<String> consumer5 = System.out::println;
+
+Stream.of("hello", "world").forEach(consumer1);
+Stream.of("hello", "world").forEach(consumer2);
+Stream.of("hello", "world").forEach(consumer3);
+Stream.of("hello", "world").forEach(consumer4);
+Stream.of("hello", "world").forEach(consumer5);
+
 
 ```
 
-### 使用集合（Stream API）
+---
 
-####
+
+### 方法引用(Method Reference)
+
+- 构造器引用 （Class< T >::new）
+- 静态方法引用 （Class::static_method）
+- 特定类的任意对象的方法引用（Class::method）
+- 特定对象的方法引用（instance::method）
+
+
+```java
+
+final List<Integer> words = IntStream.range('A', 'z')
+        .mapToObj(Integer::new)
+        .collect(Collectors.toList());
+
+//Without method reference
+BigDecimal bigDecimal = Stream.of("hello", "world", "!")
+        .flatMapToInt((s) -> s.chars())
+        .filter((s) -> words.contains(s))
+        .mapToObj((s) -> String.valueOf(s))
+        .map((s) -> new BigDecimal(s))
+        .reduce(new BigDecimal(1), (x, y) -> x.add(y));
+
+//With method reference
+BigDecimal ret = Stream.of("hello", "world", "!")
+        .flatMapToInt(String::chars) //Class::method
+        .filter(words::contains)  //instance::method
+        .mapToObj(String::valueOf) //Class::static_method
+        .map(BigDecimal::new) // Class< T >::new
+        .reduce(new BigDecimal(1), BigDecimal::add);
+```
+
+---
+
+### 使用集合(1)
+
+
+- 迭代(forEach)
+
+
+- 转换 (map)
+
+
+
+- 筛选(filter)
+
+
+---
+
+### 使用集合(2)
+
+- reduce/fold
+---
 
 ### String 处理
 
+---
+
 ### 使用资源
 
+---
 
 ### Being Lazy
 
+---
 
 ## 函数式编程基本原则
 

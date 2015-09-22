@@ -1,5 +1,7 @@
 package com.berk.java8examples;
 
+import com.berk.java8examples.tester.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,6 +20,7 @@ import java.util.stream.Stream;
 public class UsingResourceDemo
 {
 
+    @Test
     public static void main(String[] args) throws IOException
     {
         Function<Character, Character> classifier = (x) -> x;

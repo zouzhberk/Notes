@@ -72,19 +72,136 @@ code {
 		<textarea id="source">
 class: center, middle, inverse
 
-#Java8与函数式编程思维
+# JDK8 中的函数式编程
 
-## Berk
-## 9/18/2015
+### Berk
+### 9/23/2015
+
+
+
+
+---
+class: center, middle, inverse
+
+## JDK8 中的函数式编程
+
+---
+
+### Lambda 表达式
+
+
+```java
+//Consumer使用 @FunctionalInterface 明确声明接口作为函数式接口.
+Consumer<String> consumer1 = new Consumer<String>()
+{
+    public void accept(final String name)
+    {
+        System.out.println(name);
+    }
+};
+
+Consumer<String> consumer2 = (final String name) -> System.out
+        .println(name);
+
+Consumer<String> consumer3 = (name) -> System.out.println(name);
+
+Consumer<String> consumer4 = name -> System.out.println(name);
+
+Consumer<String> consumer5 = System.out::println;
+
+Stream.of("hello", "world").forEach(consumer1);
+Stream.of("hello", "world").forEach(consumer2);
+Stream.of("hello", "world").forEach(consumer3);
+Stream.of("hello", "world").forEach(consumer4);
+Stream.of("hello", "world").forEach(consumer5);
+
+
+```
 
 ---
 
 
-## Jdk 8 语言新特性
+### 方法引用(Method Reference)
+
+- 构造器引用 （Class< T >::new）
+- 静态方法引用 （Class::static_method）
+- 特定类的任意对象的方法引用（Class::method）
+- 特定对象的方法引用（instance::method）
+
+
+```java
+
+final List<Integer> words = IntStream.range('A', 'z')
+        .mapToObj(Integer::new)
+        .collect(Collectors.toList());
+
+//Without method reference
+BigDecimal bigDecimal = Stream.of("hello", "world", "!")
+        .flatMapToInt((s) -> s.chars())
+        .filter((s) -> words.contains(s))
+        .mapToObj((s) -> String.valueOf(s))
+        .map((s) -> new BigDecimal(s))
+        .reduce(new BigDecimal(1), (x, y) -> x.add(y));
+
+//With method reference
+BigDecimal ret = Stream.of("hello", "world", "!")
+        .flatMapToInt(String::chars) //Class::method
+        .filter(words::contains)  //instance::method
+        .mapToObj(String::valueOf) //Class::static_method
+        .map(BigDecimal::new) // Class< T >::new
+        .reduce(new BigDecimal(1), BigDecimal::add);
+```
+
+---
+
+### 使用集合(1)
+
+- 迭代
+
+- 转换
+
+-
+
+---
+
+### 使用集合(2)
+
+
+---
+
+### String 处理
+
+---
+
+### 使用资源
+
+---
+
+### Being Lazy
+
+---
+
+## 函数式编程基本原则
+
+### 避免可变状态
+
+### 函数是第一类值（Functions as First-Class Values）
+意味着函数可以像参数一样传输可以返回
+
+
+
+---
+
+
+# 附录：
+
+## JDK 8 语言新特性
 
 - Lambda表达式与Functional接口
 
+'''
 
+'''
 
 >为了克服函数式接口的这种脆弱性并且能够明确声明接口作为函数式接口的意图，Java 8增加了一种特殊的注解@FunctionalInterface（Java 8中所有类库的已有接口都添加了@FunctionalInterface注解）
 
@@ -105,7 +222,7 @@ class: center, middle, inverse
 
 ---
 
-## Jdk 8类库的新特新
+## JDK 8类库的新特新
 
 ### Optional
 
@@ -132,12 +249,57 @@ class: center, middle, inverse
 Files 
 Base64
 
-
-
 ---
 
-## Java8中的函数编程思维
+# Java8中的函数编程思维
 
+一种编程范式
+
+## 函数式编程基本原则
+
+### 避免可变状态
+
+### 函数是第一类值（Functions as First-Class Values）
+意味着函数可以像参数一样传输可以返回
+
+
+
+### 支持懒惰计算（lazy evaluation）；
+
+### 使用递归作为控制流程的机制；
+
+### 加强了引用透明性；
+
+### 没有副作用（Side-Effect）；
+
+
+
+
+### 表达式与变换
+函数式编程将程序表达为表达式与变换，以数学方程形式建立模型，并尽量避免可变状态，其中三个主要变换为：
+
+'''
+
+逻辑 --> 变换
+
+'''
+
+- Filter(筛选)
+
+
+- Map（映射）
+
+
+- Fold/Reduce(折叠/化约)：都是通过一个累积量来收集集合元素
+
+
+### 高阶函数与闭包(Higher-order function & Closure)
+
+
+
+
+
+expression and transform
 ---
 
 ## Reference
@@ -149,6 +311,10 @@ Base64
 [3] [Java 8 日期/时间（Date Time）API指南](http://www.codeceo.com/article/java-8-date-time-api.html)
 
 http://www.javacodegeeks.com/2014/04/java-8-date-time-api-tutorial-localdatetime.html
+
+http://rogachev.dlinkddns.com:8080/Copy/Computing/functional_programming_for_java_developers.pdf
+
+http://cfile28.uf.tistory.com/attach/250C874B52DCD4A20F56B7
 		</textarea>
 		<script src="http://gnab.github.io/remark/downloads/remark-latest.min.js"></script>
 		<script>
