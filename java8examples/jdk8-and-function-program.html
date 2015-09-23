@@ -16,8 +16,7 @@ h1, h2, h3 {
 .remark-slide-content h3 { font-size: 1.6em; }
 .footnote {
 	position: absolute;
-	bottom: 1em;
-	/*bottom: 3em;*/
+	bottom: 3em;
 }
 li p { line-height: 1.25em; }
 .red { color: #fa0000; }
@@ -50,8 +49,7 @@ code {
 }
 #slideshow .slide .content pre code {
 	font-size: 0.9em;
-	padding: 10px;
-/*	#padding: 15px; */
+	padding: 15px;
 }
 .main-title, .title {
 	background: #272822;
@@ -229,68 +227,111 @@ friends.stream().filter((s) -> s.startsWith("N")).findFirst()
 
 ### 使用集合(3)
 
-- 聚合操作
+- 聚合操作(reduce/collect)
+    - 统计量(sum,average,max,min,count)
+
+    - To Java Map
+
+    - 分组统计（groupBy /partitioningBy）
 
 ---
 
-### String 处理
+### 使用集合(Stream API 小结）
+
+- Intermediate 操作
+
+    - 这类操作都是惰性化的（lazy）；
+    - 包括 map、flatMap、 filter、 distinct、 sorted、 peek、 limit、 skip、 parallel、 sequential、 unordered
+
+- Terminal 操作
+    - Terminal 操作的执行，才会真正开始流的遍历，并且会生成一个结果；
+    - 包括forEach、 forEachOrdered、 toArray、 reduce、 collect、 min、 max、 count、 anyMatch、 allMatch、 noneMatch、 findFirst、 findAny、 iterator
+
+- Short-circuiting 操作
+    - 对于一个 intermediate 操作，如果它接受的是一个无限大（infinite/unbounded）的 Stream，但返回一个有限的新 Stream；
+
+    - 对于一个 terminal 操作，如果它接受的是一个无限大的 Stream，但能在有限的时间计算出结果；
+
+    - 包括 anyMatch、 allMatch、 noneMatch、 findFirst、 findAny、 limit。
+
 
 ---
 
-### 使用资源
+### String与资源处理
+
+- 字符串迭代.
+
+```java
+final String str = "hello world !";
+//Old way, skip 6, limit 5 chars
+int i = 0;
+for (char c : str.toCharArray()) {
+    if (i >= 6 && i < 6 + 5) {
+        System.out.println(c);
+    }
+    i++;
+}
+//New way
+str.chars().skip(6).limit(5).forEach((x) -> System.out.println((char) x));
+
+```
+
+- 文件夹迭代
+
+- 文本处理
+
+```java
+
+Map<String, Long> map = Files.lines(Paths.get("./build.gradle")).flatMap(line -> line.chars()
+        .mapToObj(c -> String.valueOf((char) c)))
+        .collect(Collectors.groupingBy((x) -> x, TreeMap::new, Collectors.counting()));
+System.out.println(map);
+
+```
+
+
 
 ---
 
-### Being Lazy
+### 关于null
 
+```java
+
+Optional<UsingCollectionsDemo.Person> optional = Optional.of(new UsingCollectionsDemo.Person("aaa", 22));
+optional.map(UsingCollectionsDemo.Person::getName).ifPresent(System.out::println);
+
+Optional<UsingCollectionsDemo.Person> optional1 = Optional.of(new UsingCollectionsDemo.Person(null, 22));
+System.out.println(optional1.flatMap(UsingCollectionsDemo.Person::getNameOptional).orElse("null"));
+
+```
 ---
 
 ## 函数式编程基本原则
 
-### 避免可变状态
+一种编程范式
 
-### 函数是第一类值（Functions as First-Class Values）
+
+- 避免可变状态
+
+- 函数是第一类值（Functions as First-Class Values）
 意味着函数可以像参数一样传输可以返回
 
+- 支持懒惰计算（lazy evaluation）；
+
+- 使用递归作为控制流程的机制；
+
+- 加强了引用透明性；
+
+- 没有副作用（Side-Effect）；
 
 
 ---
 
+##JDK8其它主题略
 
-# 附录：
-
-## JDK 8 语言新特性
-
-- Lambda表达式与Functional接口
-
-'''
-
-'''
-
->为了克服函数式接口的这种脆弱性并且能够明确声明接口作为函数式接口的意图，Java 8增加了一种特殊的注解@FunctionalInterface（Java 8中所有类库的已有接口都添加了@FunctionalInterface注解）
-
-- 接口的默认方法与静态方法
-
-
-- 方法引用
-  - 构造器引用 （Class< T >::new）
-  - 静态方法引用 （Class::static_method）
-  - 特定类的任意对象的方法引用（Class::method）
-  - 特定对象的方法引用（instance::method）
-
-- 注解功能扩展
-  - 重复注解：通过@Repeatable注解目标注解，目标注解可以重复注解；
-  - 扩展注解的支持：任何东西添加注解：局部变量、泛型类、父类与接口的实现，就连方法的异常也能添加注解。
-
-- 更好的类型推测机制
-
----
-
-## JDK 8类库的新特新
-
-### Optional
-
-### Stream API
+### 注解功能扩展
+- 重复注解：通过@Repeatable注解目标注解，目标注解可以重复注解；
+- 扩展注解的支持：任何东西添加注解：局部变量、泛型类、父类与接口的实现，就连方法的异常也能添加注解。
 
 ### Date/Time API
 
@@ -304,66 +345,6 @@ friends.stream().filter((s) -> s.startsWith("N")).findFirst()
 
 - 可扩展性：新的日期/时间API是工作在ISO-8601日历系统上的，但我们也可以将其应用在非IOS的日历上。
 
-
->> http://www.codeceo.com/article/java-8-date-time-api.html
-
-### JavaScript引擎Nashorn
-
-### 其它
-Files 
-Base64
-
----
-
-# Java8中的函数编程思维
-
-一种编程范式
-
-## 函数式编程基本原则
-
-### 避免可变状态
-
-### 函数是第一类值（Functions as First-Class Values）
-意味着函数可以像参数一样传输可以返回
-
-
-
-### 支持懒惰计算（lazy evaluation）；
-
-### 使用递归作为控制流程的机制；
-
-### 加强了引用透明性；
-
-### 没有副作用（Side-Effect）；
-
-
-
-
-### 表达式与变换
-函数式编程将程序表达为表达式与变换，以数学方程形式建立模型，并尽量避免可变状态，其中三个主要变换为：
-
-'''
-
-逻辑 --> 变换
-
-'''
-
-- Filter(筛选)
-
-
-- Map（映射）
-
-
-- Fold/Reduce(折叠/化约)：都是通过一个累积量来收集集合元素
-
-
-### 高阶函数与闭包(Higher-order function & Closure)
-
-
-
-
-
-expression and transform
 ---
 
 ## Reference
@@ -374,11 +355,11 @@ expression and transform
 
 [3] [Java 8 日期/时间（Date Time）API指南](http://www.codeceo.com/article/java-8-date-time-api.html)
 
-http://www.javacodegeeks.com/2014/04/java-8-date-time-api-tutorial-localdatetime.html
+[4] http://www.javacodegeeks.com/2014/04/java-8-date-time-api-tutorial-localdatetime.html
 
-http://rogachev.dlinkddns.com:8080/Copy/Computing/functional_programming_for_java_developers.pdf
+[5] http://rogachev.dlinkddns.com:8080/Copy/Computing/functional_programming_for_java_developers.pdf
 
-http://cfile28.uf.tistory.com/attach/250C874B52DCD4A20F56B7
+[6] http://cfile28.uf.tistory.com/attach/250C874B52DCD4A20F56B7
 
 		</textarea>
 		<script src="http://gnab.github.io/remark/downloads/remark-latest.min.js"></script>

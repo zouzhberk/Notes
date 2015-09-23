@@ -9,6 +9,6 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Tests  {
-    Test[]  value();
+public @interface Tests {
+    Test[] value();
 }

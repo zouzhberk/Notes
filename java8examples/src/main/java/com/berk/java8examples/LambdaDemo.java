@@ -5,9 +5,7 @@ import com.berk.java8examples.tester.Test;
 import com.berk.java8examples.tester.Tester;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -20,20 +18,17 @@ import java.util.stream.Stream;
 /**
  * Created by berk on 9/21/15.
  */
-public
-class LambdaDemo extends Tester
-{
+public class LambdaDemo extends Tester {
+
+    public static void main(String[] args) {
+        new LambdaDemo().execute();
+    }
 
     @Test
-    public
-    void testLambda1()
-    {
+    public void testLambda1() {
 
-        Consumer<String> consumer1 = new Consumer<String>()
-        {
-            public
-            void accept(final String name)
-            {
+        Consumer<String> consumer1 = new Consumer<String>() {
+            public void accept(final String name) {
                 System.out.println(name);
             }
         };
@@ -56,34 +51,30 @@ class LambdaDemo extends Tester
     }
 
     @Test
-    public
-    void testSupplier() throws IOException
-    {
+    public void testSupplier() throws IOException {
         Supplier<String> supplier = () -> {
             System.out.println(System.nanoTime());
             return String.valueOf(new Random().nextInt());
         };
 
-        Files.lines(null);
+
         Optional.of(supplier).get();
     }
 
     @Test
     @Ignore
-    public
-    void testMethodReference()
-    {
+    public void testMethodReference() {
         final List<Integer> words =
                 IntStream.range('A', 'z').mapToObj(Integer::new)
-                         .collect(Collectors.toList());
+                        .collect(Collectors.toList());
 
         BigDecimal bigDecimal = Stream.of("hello", "world", "!")
-                                      .flatMapToInt((s) -> s.chars())
-                                      .filter((s) -> words.contains(s))
-                                      .mapToObj((s) -> String.valueOf(s))
-                                      .map((s) -> new BigDecimal(s))
-                                      .reduce(new BigDecimal(1), (x, y) -> x
-                                              .add(y));
+                .flatMapToInt((s) -> s.chars())
+                .filter((s) -> words.contains(s))
+                .mapToObj((s) -> String.valueOf(s))
+                .map((s) -> new BigDecimal(s))
+                .reduce(new BigDecimal(1), (x, y) -> x
+                        .add(y));
 
 
         System.out.println(bigDecimal);
@@ -91,19 +82,13 @@ class LambdaDemo extends Tester
 
         BigDecimal ret = Stream.of("hello", "world", "!")
 
-                               .flatMapToInt(String::chars)
-                               .filter(words::contains)
-                               .mapToObj(String::valueOf)
-                               .map(BigDecimal::new)
-                               .reduce(new BigDecimal(1), BigDecimal::add);
+                .flatMapToInt(String::chars)
+                .filter(words::contains)
+                .mapToObj(String::valueOf)
+                .map(BigDecimal::new)
+                .reduce(new BigDecimal(1), BigDecimal::add);
 
         System.out.println(ret);
-    }
-
-    public static
-    void main(String[] args)
-    {
-        new LambdaDemo().execute();
     }
 
 }

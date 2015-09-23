@@ -18,9 +18,7 @@ import java.util.Locale;
 /**
  * Created by berk on 9/16/15.
  */
-public
-class DataTimeDemo
-{
+public class DataTimeDemo {
 
     private final static String DATE_PATTERN = "[yyyy-MM/dd:HH";
     private final static String DATE_PATTERN2 = "yyyy-MM/dd:HH";
@@ -29,9 +27,7 @@ class DataTimeDemo
 
     @Test(DATE_PATTERN)
     @Test(DATE_PATTERN2)
-    public
-    void parseDateTimeStrNew(String pattern, int arg2)
-    {
+    public void parseDateTimeStrNew(String pattern, int arg2) {
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
@@ -46,9 +42,7 @@ class DataTimeDemo
     }
 
     @Test
-    public
-    void parseDateTimeStrOld() throws ParseException
-    {
+    public void parseDateTimeStrOld() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
         Date datetime = sdf.parse(DATE_TIME_STR_INPUT);
         System.out.println("Output:");
@@ -57,9 +51,7 @@ class DataTimeDemo
 
 
     @Test
-    public
-    void createDateNew()
-    {
+    public void createDateNew() {
         LocalTime time = LocalTime.of(18, 40, 32);
         LocalDate date = LocalDate.of(2015, Month.SEPTEMBER, 18);
         LocalDateTime datetime = LocalDateTime.of(2015, 9, 18, 18, 40, 32);
@@ -69,17 +61,12 @@ class DataTimeDemo
     }
 
     @Test
-    public
-    void nowDateNew()
-    {
-
+    public void nowDateNew() {
     }
 
 
     @Test
-    public
-    void createDateOld()
-    {
+    public void createDateOld() {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.set(2015, 9, 18, 18, 40, 32);
         Date date = calendar.getTime();

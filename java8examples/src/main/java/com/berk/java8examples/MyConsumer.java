@@ -4,8 +4,7 @@ package com.berk.java8examples;
  * Created by berk on 9/22/15.
  */
 @FunctionalInterface
-public interface MyConsumer<T>
-{
+public interface MyConsumer<T> {
     /**
      * Performs this operation on the given argument.
      *

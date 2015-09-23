@@ -18,9 +18,7 @@ import static java.util.stream.Collectors.summingInt;
 /**
  * Created by berk on 9/21/15.
  */
-public
-class UsingCollectionsDemo extends Tester
-{
+public class UsingCollectionsDemo extends Tester {
 
     private final static String TEST_STR =
             "import java util regex Matcher;\n" +
@@ -29,9 +27,7 @@ class UsingCollectionsDemo extends Tester
     private final static List<String> NON_WORDS =
             Arrays.asList("the", "and", "of", "to", "be", "util");
 
-    private static
-    Stream<String> regexToListUsingStream(String words, String regex)
-    {
+    private static Stream<String> regexToListUsingStream(String words, String regex) {
         Matcher m = Pattern.compile(regex).matcher(words);
 
         Spliterator<String[]> spliter = new PatternSpliterator(m);
@@ -39,15 +35,12 @@ class UsingCollectionsDemo extends Tester
 
     }
 
-    private static
-    Stream<String> regexToListOLD(String words, String regex)
-    {
+    private static Stream<String> regexToListOLD(String words, String regex) {
         Matcher m = Pattern.compile(regex).matcher(words);
 
         List<String> list = new ArrayList<>();
 
-        while (m.find())
-        {
+        while (m.find()) {
             list.add(m.group());
         }
         return list.stream();
@@ -55,39 +48,30 @@ class UsingCollectionsDemo extends Tester
 
     }
 
-    public static
-    void main(String[] args)
-    {
+    public static void main(String[] args) {
         new UsingCollectionsDemo().execute();
     }
 
     @Test
     @Ignore
-    public
-    void testIteratingList()
-    {
+    public void testIteratingList() {
         final List<String> friends =
                 Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara",
                         "Scott");
 
         //OLD Style 1
-        for (int i = 0; i < friends.size(); i++)
-        {
+        for (int i = 0; i < friends.size(); i++) {
             System.out.println(friends.get(i));
         }
 
         //OLD Style 2
-        for (String friend : friends)
-        {
+        for (String friend : friends) {
             System.out.println(friend);
         }
 
         //New Style 1
-        friends.forEach(new Consumer<String>()
-        {
-            public
-            void accept(final String name)
-            {
+        friends.forEach(new Consumer<String>() {
+            public void accept(final String name) {
                 System.out.println(name);
             }
         });
@@ -103,110 +87,71 @@ class UsingCollectionsDemo extends Tester
     }
 
     @Test
-    public
-    void testMap()
-    {
+    public void testMap() {
         final List<String> friends =
                 Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara",
                         "Scott");
 
         //Old way.
         List<String> uppercaseNames = new ArrayList<String>();
-        for (String name : friends)
-        {
+        for (String name : friends) {
             uppercaseNames.add(name.toUpperCase());
         }
         System.out.println(uppercaseNames);
 
         //New way.
         uppercaseNames = friends.stream().map(String::toUpperCase)
-                                .collect(Collectors.toList());
+                .collect(Collectors.toList());
         System.out.println(uppercaseNames);
     }
 
     @Test
-    public
-    void testFilter()
-    {
+    public void testFilter() {
         final List<String> friends =
                 Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara",
                         "Scott");
 
         //Old way.
-        for (String name : friends)
-        {
-            if (name.contains("r") && name.contains("a"))
-            {
+        for (String name : friends) {
+            if (name.contains("r") && name.contains("a")) {
                 System.out.println(name);
             }
         }
         //New way.
         friends.stream().filter((s) -> s.contains("r"))
-               .filter((s) -> s.contains("a"))
-               .forEach(System.out::println);
+                .filter((s) -> s.contains("a"))
+                .forEach(System.out::println);
     }
 
     @Test
     @Ignore
-    public
-    void testPickAElment()
-    {
+    public void testPickElement() {
         final List<String> friends =
                 Arrays.asList("Brian", "Nate", "Neal", "Raju", "Sara",
                         "Scott");
 
         //Old way
         String foundName = null;
-        for (String name : friends)
-        {
-            if (name.startsWith("N"))
-            {
+        for (String name : friends) {
+            if (name.startsWith("N")) {
                 foundName = name;
                 break;
             }
         }
-        if (foundName == null)
-        {
+        if (foundName == null) {
             throw new NoSuchElementException("no name found.");
         }
         System.out.println(foundName);
 
         //New way.
         friends.stream().filter((s) -> s.startsWith("N")).findFirst()
-               .ifPresent(System.out::println);
+                .ifPresent(System.out::println);
 
     }
 
-    public static
-    class Person
-    {
-        public
-        Person(String name, int age)
-        {
-            this.name = name;
-            this.age = age;
-        }
-
-        private final String name;
-        private final int age;
-
-        public
-        String getName()
-        {
-            return name;
-        }
-
-        public
-        int getAge()
-        {
-            return age;
-        }
-    }
-
+    @Ignore
     @Test
-    public
-    void testReduce1()
-    {
+    public void testReduce1() {
         final List<Person> friends =
                 Arrays.asList(new Person("Brian", 20), new Person
                         ("Nate", 28), new Person("Neal", 40), new Person
@@ -218,20 +163,20 @@ class UsingCollectionsDemo extends Tester
 
         // Max age
         friends.stream().max(Comparator.comparing(Person::getAge))
-               .ifPresent(System.out::println);
+                .ifPresent(System.out::println);
         friends.stream().collect(Collectors
                 .maxBy(Comparator.comparing(Person::getAge)))
-               .ifPresent(System.out::println);
+                .ifPresent(System.out::println);
 
         friends.stream()
-               .reduce((x, y) -> x.getAge() - y.getAge() > 0 ? x : y)
-               .ifPresent(System.out::println);
+                .reduce((x, y) -> x.getAge() - y.getAge() > 0 ? x : y)
+                .ifPresent(System.out::println);
 
         //total age.
         Integer ret = friends.stream().collect(Collectors
                 .summingInt(Person::getAge));
         Optional<Integer> ret1 = friends.stream().map(Person::getAge)
-                                        .reduce((x, y) -> x + y);
+                .reduce((x, y) -> x + y);
         ret1.filter((x) -> x == ret).ifPresent(System.out::println);
 
         //Average age.
@@ -244,10 +189,9 @@ class UsingCollectionsDemo extends Tester
         System.out.println(ret3);
     }
 
+
     @Test
-    public
-    void testReduce2()
-    {
+    public void testReduce2() {
         final List<Person> friends =
                 Arrays.asList(new Person("Brian", 20), new Person
                         ("Nate", 28), new Person("Neal", 40), new Person
@@ -261,53 +205,62 @@ class UsingCollectionsDemo extends Tester
         // .getName(), ));
         friends.stream().collect(Collectors
                 .toMap(Person::getName, Person::getAge, (x, y) -> x))
-               .forEach((x, y) -> System.out.println(x + ", " + y));
+                .forEach((x, y) -> System.out.println(x + ", " + y));
 
         System.out.println();
         //to Map, order by key.
         friends.stream().collect(Collectors
                 .toMap(Person::getName, Person::getAge, (x, y) -> y,
                         TreeMap::new))
-               .forEach((x, y) -> System.out.println(x + ", " + y));
+                .forEach((x, y) -> System.out.println(x + ", " + y));
 
 
         //toMap, group by name
         friends.stream().collect(Collectors
                 .groupingBy(Person::getName, Collectors
                         .mapping(Person::getAge, Collectors.toList())))
-               .forEach((x, y) -> System.out.println(x + ", " + y));
+                .forEach((x, y) -> System.out.println(x + ", " + y));
         friends.stream().collect(Collectors
                 .groupingBy(Person::getName, Collectors
                         .summingInt(Person::getAge)))
-               .forEach((x, y) -> System.out.println(x + ", " + y));
+                .forEach((x, y) -> System.out.println(x + ", " + y));
 
         friends.stream().collect(Collectors
                 .groupingBy(Person::getName, Collectors.counting()))
-               .forEach((x, y) -> System.out.println(x + ", " + y));
+                .forEach((x, y) -> System.out.println(x + ", " + y));
+
+        // toMap ,partitioningBy
+        friends.stream().collect(Collectors.partitioningBy((x) -> x.getAge() > 30, Collectors.toList())).forEach((x, y) -> System.out.println(x + ", " + y));
+
+        friends.stream().collect(Collectors.partitioningBy((x) -> x.getAge() > 30, Collectors.toMap(Person::getName, Person::getAge, (x, y) -> y,
+                TreeMap::new))).forEach((x, y) -> System.out.println(x + ", " + y));
+        friends.stream().parallel().sequential().sorted(Comparator.comparing(Person::getAge).reversed()).collect(Collectors.partitioningBy((x) -> x.getAge() > 30, Collectors
+                .mapping(Person::getAge, Collectors.toList()))).forEach((x, y) -> System.out.println(x + ", " + y));
+
+
+        Stream.generate(() ->
+        {
+            return String.valueOf(new Random().nextInt());
+
+        }).limit(10).forEach(System.out::println);
 
     }
 
-    public
-    void testNewStream()
-    {
+    public void testNewStream() {
 
         String regex = "\\w+";
 
 
         Matcher m = Pattern.compile(regex)
-                           .matcher(UsingCollectionsDemo.TEST_STR);
+                .matcher(UsingCollectionsDemo.TEST_STR);
 
         Spliterator<String[]> spliter = new PatternSpliterator(m);
-        StreamSupport.stream(spliter, false);
+            StreamSupport.stream(spliter, false);
 
     }
 
-
     @Test
-    @Ignore
-    public
-    void testStringPattern()
-    {
+    public void testStringPattern() {
         String regex = "\\w+";
 
         regexToListUsingStream(UsingCollectionsDemo.TEST_STR, regex)
@@ -326,10 +279,38 @@ class UsingCollectionsDemo extends Tester
 
     }
 
-    private static
-    class PatternSpliterator extends Spliterators
-            .AbstractSpliterator<String[]>
-    {
+    public static class Person {
+        private final String name;
+        private final int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Optional<String> getNameOptional() {
+            return Optional.ofNullable(name);
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
+    }
+
+    private static class PatternSpliterator extends Spliterators
+            .AbstractSpliterator<String[]> {
         private final Matcher matcher;
 
         /**
@@ -338,27 +319,22 @@ class UsingCollectionsDemo extends Tester
          *
          * @param m
          */
-        protected
-        PatternSpliterator(Matcher m)
-        {
+        protected PatternSpliterator(Matcher m) {
             super(Long.MAX_VALUE,
                     Spliterator.ORDERED | NONNULL | IMMUTABLE);
             this.matcher = m;
         }
 
         @Override
-        public
-        boolean tryAdvance(Consumer<? super String[]> action)
-        {
-            if (!matcher.find())
-            {
+        public boolean tryAdvance(Consumer<? super String[]> action) {
+            if (!matcher.find()) {
                 return false;
             }
 
             action.accept(Stream.iterate(0, f -> f + 1)
-                                .limit(matcher.groupCount() + 1)
-                                .map(matcher::group)
-                                .toArray(String[]::new));
+                    .limit(matcher.groupCount() + 1)
+                    .map(matcher::group)
+                    .toArray(String[]::new));
 
             return true;
         }

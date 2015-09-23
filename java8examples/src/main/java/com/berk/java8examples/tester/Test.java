@@ -10,8 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Repeatable(Tests.class)
-public @interface Test
-{
+public @interface Test {
     public static final String NONE = "NONE";
 
     String desc() default "";
