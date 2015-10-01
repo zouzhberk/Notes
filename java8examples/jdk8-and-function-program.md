@@ -288,3 +288,5 @@ System.out.println(optional1.flatMap(UsingCollectionsDemo.Person::getNameOptiona
 [5] http://rogachev.dlinkddns.com:8080/Copy/Computing/functional_programming_for_java_developers.pdf
 
 [6] http://cfile28.uf.tistory.com/attach/250C874B52DCD4A20F56B7
+
+[7] http://www.coreservlets.com/java-8-tutorial/
