@@ -9,6 +9,7 @@ Overlay
 
 Overlay2
 
+DeviceMapper Centos7 会出现镜像下不了情况
 
 ## Docker Volume
 
