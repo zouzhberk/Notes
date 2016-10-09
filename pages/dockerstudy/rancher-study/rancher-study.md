@@ -12,7 +12,7 @@ Rancher 调研报告
 
 
 
-## Rancher 功能介绍
+## Rancher 使用介绍
 
 - Rancher是一个开源的、全面的容器部署及管理平台。
 
@@ -80,6 +80,19 @@ sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v 
 - 添加完成之后，在存储管理既可以在该卷管理驱动(convoy-nfs)上新增或删除卷。
 ![storage-manager](./storage-manager.png)
 
+- 同时可以在HOST 上查看卷信息
+
+```
+[root@docker01 server]# docker volume list
+DRIVER              VOLUME NAME
+local               6e5330913852b6375c76fc5b3b299b599b58e07e795db31f0a670851a17d9948
+local               a833d5a62958072329802e81f49a2c42c839e5e52cf6fb25df55942fce6a9569
+convoy-nfs          test1
+convoy-nfs          test2
+convoy-nfs          test3
+
+```
+
 - 在创建需要卷的容器时，填写相关的卷名称即可。
 
 ### 镜像库管理与容器创建
@@ -124,9 +137,110 @@ sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v 
 ![app-store-list](./app-store-list.png)
 
 ### 应用栈（Stack）创建与管理
+![add-jenkins-stack02](./add-jenkins-stack.png)
+![add-jenkins-stack02](./add-jenkins-stack02.png)
 
+`docker-compose.yml`
+```
+jenkins-primary:
+  image: "jenkins:1.651.3"
+  ports:
+    - "${PORT}:8080"
+  labels:
+    io.rancher.sidekicks: jenkins-plugins,jenkins-datavolume
+    io.rancher.container.hostname_override: container_name
+  volumes_from:
+    - jenkins-plugins
+    - jenkins-datavolume
+  entrypoint: /usr/share/jenkins/rancher/jenkins.sh
+jenkins-plugins:
+  image: rancher/jenkins-plugins:v0.1.1
+jenkins-datavolume:
+  image: "busybox"
+  volumes:
+    - ${volume_work}:/var/jenkins_home
+  labels:
+    io.rancher.container.start_once: true
+  entrypoint: ["chown", "-R", "1000:1000", "/var/jenkins_home"]
+```
+`rancher-compose.yml` 
+```
+.catalog:
+  name: Jenkins
+  version: 1.651.3-rancher1
+  description: |
+    Jenkins CI management server.
+  questions:
+  - variable: "PORT"
+    type: "int"
+    label: "Port Number"
+    description: "Which port should Jenkins listen on?"
+    default: 8080
+    required: true
+  - variable: "volume_work"
+    description: "Work volume to save jenkins data"
+    label: "Work volume:"
+    required: true
+    default: "/var/lib/docker/jenkins-ci"
+    type: "string"
+  - variable: "plugins"
+    type: "multiline"
+    label: "List of Plugins"
+    description: |
+      List of plugins in the format <plugin_name>[:<version>]
+      one entry per line.
+    default: |
+      credentials
+      git
+      git-client
+      github
+      github-api
+      github-oauth
+      greenballs
+      junit
+      plain-credentials
+      scm-api
+      ssh-credentials
+      ssh-slaves
+      swarm
+jenkins-primary:
+  metadata:
+    plugins: |
+      ${plugins}
+```
 
-## Rancher 架构介绍
+`answers.txt`
+```
+PORT=8080
+volume_work=test1
+plugins='credentials
+git
+git-client
+github
+github-api
+github-oauth
+greenballs
+junit
+plain-credentials
+scm-api
+ssh-credentials
+ssh-slaves
+swarm
+'
+``` 
+
+## Rancher 设计介绍
+
+### Rancher Server
+
+rancher/dind
+docker: https://store.docker.com/community/images/rancher/dind
+source: https://github.com/rancher/docker-dind-base
+
+websocket-proxy
+
+https://github.com/rancher/websocket-proxy
+
 
 ## 目前问题
 
