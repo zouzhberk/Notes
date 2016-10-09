@@ -70,10 +70,10 @@ sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v 
 
 ### 存储管理
 
-在Docker中支持通过Volume插件来管理 NFS Glusterfs等分布式存储，Rancher 目前提供
+在Docker中支持通过Volume插件来管理 NFS，Glusterfs等分布式存储，Rancher 目前提供
 官方提供Convoy 插件来进行分布式卷管理。
 
-- 可以通过步骤 `应用商店 --> 选取Convoy NFS --> 配置NFS Server信息 --> 创建应用` 来创建卷管理服务。
+- 可以通过步骤 `应用商店 --> 选取Convoy NFS --> 配置NFS Server信息 --> 创建应用` 来快捷创建卷管理服务。
 
 ![Convoy NFS](./convoy-nfs.png)
 
