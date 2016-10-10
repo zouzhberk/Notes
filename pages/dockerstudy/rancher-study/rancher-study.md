@@ -32,6 +32,8 @@ $ sudo docker run -d --restart=unless-stopped -p 8080:8080 rancher/server
 # Tail the logs to show Rancher
 $ sudo docker logs -f containerid
 ```
+
+
 - 通过 http://192.168.1.122:8080/ 进入管理页面，即成功部署；
 - Server部署完成之后，默认创建名为Default的环境（使用cattle编排），可以按照提示步骤部署主机或者新增环境。
 
@@ -53,6 +55,10 @@ Rancher 支持将资源分组归属到多个环境中。每个环境具有自己
 
 - 支持多种节点添加与部署模式，支持docker-machine方式部署节点;
 - 提供主机驱动管理，可以添加docker-machine驱动；
+
+- 添加的主机 需要满足 支持 Docker v1.10.3 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问Rancher 服务器
+
+- 可以是任何共有云、私有云等方式提供的主机。
 
 - 对于自定义模式，只需要在Docker节点上执行如下命令即可注册；
 ```
@@ -137,6 +143,8 @@ convoy-nfs          test3
 ![app-store-list](./app-store-list.png)
 
 ### 应用栈（Stack）创建与管理
+
+
 ![add-jenkins-stack02](./add-jenkins-stack.png)
 ![add-jenkins-stack02](./add-jenkins-stack02.png)
 
@@ -229,17 +237,74 @@ swarm
 '
 ``` 
 
+## Rancher 编排系统介绍
+Rancher 原生使用 Cattle 编排框架.
+![cattle-overview](./cattle-overview.png)
+
+### Docker Compose
+
+
+### Rancher Metadata 服务 与应用配置
+
+https://github.com/rancher/rancher-metadata
+
+```
+curl -H 'Acccept: application/json' http://rancher-metadata/2015-12-19/self/container/create_index
+curl http://rancher-metadata/latest/self/container/primary_ip
+```
+> [Confd与Rancher-metadata 结合的妙用](http://niusmallnan.github.io/_build/html/_templates/rancher/confd_metadata.html)
+
+
 ## Rancher 设计介绍
 
 ### Rancher Server
 
-rancher/dind
-docker: https://store.docker.com/community/images/rancher/dind
-source: https://github.com/rancher/docker-dind-base
+- rancher/dind
+    - image: https://store.docker.com/community/images/rancher/dind
+    - source: https://github.com/rancher/docker-dind-base
 
-websocket-proxy
 
-https://github.com/rancher/websocket-proxy
+- websocket-proxy
+
+    - source:https://github.com/rancher/websocket-proxy
+
+- rancher/server
+    - image: https://store.docker.com/community/images/rancher/server
+    - source: https://github.com/rancher/rancher/tree/master/server
+
+- rancher-catalog-service 
+ 
+    - source【GO】:https://github.com/rancher/rancher-catalog-service
+- go-machine-service
+  - source[GO]: 
+
+```
+// - giddyup
+//     - Giddyup is a tool to that helps get services started in a Rancher compose stack. It aims to simplify entrypoint and command scripting to start your Docker services.
+//     - source【GO】: https://github.com/cloudnautique/giddyup
+```
+### rancher-catalog-service
+
+  - rancher-catalog-service gets deployed as a Rancher service containerized app.
+
+  - rancher-catalog-service will clone a git repo (e.g. a public github repo) and provide API to list and navigate through the templates and subversions from the repo
+
+  - The service will periodically sync changes from the repo
+
+  - The UI integrated with the service will enable the user to view the templates in a catalog format and also launch a template to a specified rancher deployment.
+
+### rancher-compose-executor/racher-compose(New Version )
+source[GO] :https://github.com/rancher/rancher-compose-executor
+merge to source[GO] : https://github.com/rancher/rancher-compose
+
+
+## rancher-agent/rancher-agent-instance
+
+### https://github.com/rancher/host-api
+
+
+
+
 
 
 ## 目前问题
