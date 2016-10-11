@@ -110,7 +110,7 @@ convoy-nfs          test3
 
 - 在添加完成之后，进入容器管理页面点击添加容器
 
-![](./add-container.png)
+![add-container](./add-container.png)
 
 - 在选择镜像输入 镜像名称信息
 > 如果为私有镜像则格式为 [镜像中心网站,默认为index.docker.io]/[用户名]/<镜像名>:[标签，默认为latest]
