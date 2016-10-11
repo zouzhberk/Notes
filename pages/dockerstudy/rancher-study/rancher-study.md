@@ -257,6 +257,9 @@ curl http://rancher-metadata/latest/self/container/primary_ip
 
 ## Rancher 设计介绍
 
+### Rancher 部署架构
+![](./rancher-deployment-architecture.png)
+
 ### Rancher Server
 
 - rancher/dind
@@ -298,12 +301,21 @@ source[GO] :https://github.com/rancher/rancher-compose-executor
 merge to source[GO] : https://github.com/rancher/rancher-compose
 
 
-## rancher-agent/rancher-agent-instance
+## rancher-agent
+```
+root      5061  2879  2 04:19 ?        00:10:47 python /var/lib/cattle/pyagent/main.py
+root      5340  5061  0 04:19 ?        00:00:04 /bin/bash /var/lib/cattle/pyagent/cattle/process_watcher.sh
+root      5347  5061  0 04:19 ?        00:01:03 host-api -cadvisor-url http://127.0.0.1:9344 -logtostderr=true -ip 0.0.0.0 -port 9345 -auth=true -host-uuid ac2f0bd2-63d4-49bd-89ae-4a3f64bd52b8 -public-key /var/lib/cattle/etc/cattle/api.crt -cattle-url http://192.168.0.161:8080/v1 -cattle-state-dir /var/lib/rancher/state/containers
+root      5351  5061  0 04:19 ?        00:00:00 /bin/bash /var/lib/cattle/bin/cadvisor.sh cadvisor -logtostderr=true -listen_ip 127.0.0.1 -port 9344 -housekeeping_interval 1s -docker_root /var/lib/docker
+```
+## rancher-agent-instance
+
+
 
 ### https://github.com/rancher/host-api
 
 
-
+### https://github.com/rancher/python-agent
 
 
 
