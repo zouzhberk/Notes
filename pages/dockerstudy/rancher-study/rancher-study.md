@@ -262,6 +262,21 @@ curl http://rancher-metadata/latest/self/container/primary_ip
 
 ### Rancher Server
 
+```
+root@3d4efa25ee4d:/# ps -efwww
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 Oct08 ?        00:00:06 /usr/bin/s6-svscan /service
+root         7     1  0 Oct08 ?        00:00:00 s6-supervise cattle
+root         8     1  0 Oct08 ?        00:00:00 s6-supervise mysql
+root         9     7  1 Oct08 ?        01:17:13 java -Xms128m -Xmx1g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/lib/cattle/logs -Dlogback.bootstrap.level=WARN -cp /usr/share/cattle/58488b81592773dcae114770406e3e1b:/usr/share/cattle/58488b81592773dcae114770406e3e1b/etc/cattle io.cattle.platform.launcher.Main
+mysql       24     8  0 Oct08 ?        00:33:35 /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306
+root       154     9  0 Oct08 ?        00:16:04 websocket-proxy
+root     12327     9  0 00:40 ?        00:00:12 go-machine-service
+root     12339     9  0 00:40 ?        00:00:06 rancher-compose-executor
+root     15309     9  0 Oct08 ?        00:02:19 rancher-catalog-service -catalogUrl library=https://github.com/rancher/rancher-catalog.git,mycatalog1=https://github.com/zouzhberk/community-catalog.git -refreshInterval 300
+
+```
+
 - rancher/dind
     - image: https://store.docker.com/community/images/rancher/dind
     - source: https://github.com/rancher/docker-dind-base
@@ -338,6 +353,11 @@ root     28869     0  0 02:06 ?        00:00:00 /bin/bash
 http://www.cnblogs.com/zhengyun_ustc/p/dockerstack.html
 
 
+## ISSUES:
+
+docker pull rancher/mesos-slave:latest
+
+failed to register layer: devicemapper: Error running deviceCreate (createSnapDevice) dm_task_run failed
 
 
 MuqLyE4prXzHEw5ZjqMw3rkHTaXPE5FaSC6xSvmT 
