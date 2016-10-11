@@ -310,7 +310,21 @@ root      5351  5061  0 04:19 ?        00:00:00 /bin/bash /var/lib/cattle/bin/ca
 ```
 ## rancher-agent-instance
 
+```
+root@4528bc661ce7:/# ps -ef
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 Oct08 ?        00:00:00 init  
+root       730     1  0 Oct08 ?        00:01:01 /var/lib/cattle/bin/rancher-metadata -log /var/log/rancher-metadata.log -answers /var/lib/cattle/etc/cattle/me
+root       818     1  0 Oct08 ?        00:00:40 /var/lib/cattle/bin/rancher-dns -log /var/log/rancher-dns.log -answers /var/lib/cattle/etc/cattle/dns/answers.
+root      1027     1  0 Oct08 ?        00:01:22 /usr/bin/monit -Ic /etc/monit/monitrc
+root      1079     1  0 Oct08 ?        00:03:23 /var/lib/cattle/bin/host-api -log /var/log/haproxy-monitor.log -haproxy-monitor -pid-file /var/run/haproxy-mon
+root      1090     1  0 Oct08 ?        00:02:50 /usr/local/sbin/charon
+root      1143     1  0 Oct08 ?        00:04:28 /var/lib/cattle/bin/rancher-net --log /var/log/rancher-net.log -f /var/lib/cattle/etc/cattle/ipsec/config.json
+haproxy  27822     0  0 Oct10 ?        00:00:32 haproxy -p /var/run/haproxy.pid -f /etc/healthcheck/healthcheck.cfg -sf 27753
+root     28828  1027  0 Oct10 ?        00:00:00 [logrotate] <defunct>
+root     28869     0  0 02:06 ?        00:00:00 /bin/bash
 
+```
 
 ### https://github.com/rancher/host-api
 
