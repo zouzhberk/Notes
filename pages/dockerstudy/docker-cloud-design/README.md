@@ -19,6 +19,8 @@
  
 1. 支持软件市场分类搜索查看；
 2. 支持软件安装、升级、卸载和查询。
+3. 支持多个编排部署环境（如本地部署或远程部署）；
+
 
 ## 概要设计
 
@@ -29,10 +31,6 @@
 ### 设计框架图
 
 ![app-stack-manager-architecture-logical](./app-stack-manager-architecture-logical.png)
-
-### 应用创建流程
-
-![app-stack-manager-flowchart](./app-stack-manager-flowchart.png)
 
 
 ## SDK设计
@@ -57,7 +55,9 @@ Mango 层SDK 主要以满足需求为主。
 class ApplicationTemplate
 {
     public static List<ApplicationTemplate> list(ListTemplateOptions option){}
-    
+
+
+    public List<TemplateVersion> listVersions(){}    
     /**
      * 应用模板ID.
      */
@@ -73,13 +73,17 @@ class ApplicationTemplate
 }
 ```
 
+
 ```java
 class ApplicationStack
 {
     public static List<ApplicationStack> list(ListStackOptions options){}
 
-    public 
+    public void find(String sid){}
+    
+    public void update(){}
 
+    public void delete(){}
 }
 ```
 
@@ -97,6 +101,7 @@ CREATE TABLE `caas_enviroment`(
     `description` varchar(1024) DEFAULT NULL,
     `state` varchar(128) NOT NULL COMMENT 'active,inactive,removed',
     `driverId` bigint(20) DEFAULT NULL,
+    `configData` text,
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_caas_enviroment_uuid`(`uuid`)
 );
@@ -121,7 +126,8 @@ CREATE TABLE `caas_stack`(
     `updated` datetime DEFAULT NULL,
     `removed` datetime DEFAULT NULL,
     `removeTime` datetime DEFAULT NULL,
-    `name` varchar(255) DEFAULT NULL,    
+    `name` varchar(255) DEFAULT NULL,
+    `endpoint`  varchar(255) DEFAULT NULL,
     `enviromentId` bigint(20) DEFAULT NULL,
     `state` varchar(255) DEFAULT NULL COMMENT 'creating,running,stopped,removed',
     `versionId` varchar(255) DEFAULT NULL COMMENT 'template version',
@@ -131,3 +137,35 @@ CREATE TABLE `caas_stack`(
 );
 
 ```
+
+## 详细设计
+
+### 部署环境管理设计
+部署环境管理，主要功能如下：
+1. 可以支持多个不同类型的编排部署工具进行管理。
+2. 每一种类型的编排工具对应一个驱动。
+3. 自动生成一个默认环境，该环境使用一个默认部署驱动。
+
+
+### 应用栈管理设计
+
+应用管理包括应用创建、版本更新，应用查询等，接下来描述应用创建和更新流程。
+
+#### 应用创建流程
+
+![app-stack-manager-flowchart-deploy](./app-stack-manager-flowchart-deploy.png)
+
+#### 应用更新流程
+应用更新 主要是通过编排部署系统来实现，应用管理系统主要负责提供新的编排文件。
+
+1. 获取但前应用栈的应用模板以及版本信息(repo:catalog:template:version)；
+2. 获取应用模板最新版本信息；
+3. 比较两者版本信息，如果最新版本较大则执行以下操作，否则退出；
+4. 选择最新版本，并配置并生成编排文件；
+5. 编排部署应用。
+
+### 应用模板管理设计
+应用模板管理包括如下两部分：
+1. 定时同步服务端应用模板库；
+2. 根据模板库，给出模板列表以及模板详细信息，以及对外提供模板浏览接口；
+
