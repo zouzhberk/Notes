@@ -33,6 +33,40 @@
 ![app-stack-manager-architecture-logical](./app-stack-manager-architecture-logical.png)
 
 
+## 详细设计
+
+### 部署环境管理设计
+部署环境管理，主要功能如下：
+1. 可以支持多个不同类型的编排部署工具进行管理。
+2. 每一种类型的编排工具对应一个驱动。
+3. 自动生成一个默认环境，该环境使用一个默认部署驱动。
+
+
+### 应用栈管理设计
+
+应用管理包括应用创建、版本更新，应用查询等，接下来描述应用创建和更新流程。
+
+#### 应用创建流程
+
+![app-stack-manager-flowchart-deploy](./app-stack-manager-flowchart-deploy.png)
+
+
+#### 应用更新流程
+应用更新 主要是通过编排部署系统来实现，应用管理系统主要负责提供新的编排文件。
+
+1. 获取但前应用栈的应用模板以及版本信息(repo:catalog:template:version)；
+2. 获取应用模板最新版本信息；
+3. 比较两者版本信息，如果最新版本较大则执行以下操作，否则退出；
+4. 选择最新版本，并配置并生成编排文件；
+5. 编排部署应用。
+
+### 应用模板管理设计
+应用模板管理包括如下两部分：
+1. 定时同步服务端应用模板库；
+2. 根据模板库，给出模板列表以及模板详细信息，以及对外提供模板浏览接口；
+
+
+
 ## SDK设计
 
 ### 应用管理服务API设计
@@ -40,50 +74,49 @@
 ### ApplicationStackService
 
 ```java
-interface ApplicationStackService
+public interface ApplicationStackService
 {
+    public ApplicationStackView deploy(String stackName, String templateVersionId, StackConfigView config) throws
+            CaaSServiceException, IOException;
 
-}
+    public void destroy(String stackName) throws CaaSServiceException, IOException;
 
-```
+    public void update(String stackName, String templateVersionId, StackConfigView config) throws
+            CaaSServiceException, IOException;
 
-### Mango SDK 设计
-Mango 层SDK 主要以满足需求为主。
+    public ApplicationStackView stop(String stackName) throws
+            CaaSServiceException, IOException;
 
-```java
-/* 应用模板管理*/
-class ApplicationTemplate
-{
-    public static List<ApplicationTemplate> list(ListTemplateOptions option){}
-
-
-    public List<TemplateVersion> listVersions(){}    
-    /**
-     * 应用模板ID.
-     */
-    public getSid(){}
-
-    public getDescription(){}
-
-    /**
-     * 应用类别.
-     */
-    public getCategory(){}
-    ....
+    public ApplicationStackView start(String stackName) throws
+            CaaSServiceException, IOException;
 }
 ```
-
+### CatalogService
 
 ```java
-class ApplicationStack
+public interface CatalogService
 {
-    public static List<ApplicationStack> list(ListStackOptions options){}
+    public ApplicationTemplateView[] listTemplates() throws CaaSServiceException, IOException;
 
-    public void find(String sid){}
-    
-    public void update(){}
+    public TemplateVersionView[] listTemplateVersions() throws CaaSServiceException, IOException;
 
-    public void delete(){}
+    public CatalogView[] listCatalogs() throws CaaSServiceException, IOException;
+
+    public TemplateVersionView find(String versionId) throws CaaSServiceException, IOException;
+}
+```
+### EnviromentService
+编排部署环境管理服务API
+
+```java
+public interface EnviromentService
+{
+    public EnviromentView register(String envName, StackDriverView driver, EnviromentConfig config) throws 
+            CaaSServiceException, IOException;
+
+    public EnviromentView update(String envName, EnviromentConfig config) throws CaaSServiceException, IOException;
+
+    public void release(String envName) throws CaaSServiceException, IOException;
 }
 ```
 
@@ -137,35 +170,3 @@ CREATE TABLE `caas_stack`(
 );
 
 ```
-
-## 详细设计
-
-### 部署环境管理设计
-部署环境管理，主要功能如下：
-1. 可以支持多个不同类型的编排部署工具进行管理。
-2. 每一种类型的编排工具对应一个驱动。
-3. 自动生成一个默认环境，该环境使用一个默认部署驱动。
-
-
-### 应用栈管理设计
-
-应用管理包括应用创建、版本更新，应用查询等，接下来描述应用创建和更新流程。
-
-#### 应用创建流程
-
-![app-stack-manager-flowchart-deploy](./app-stack-manager-flowchart-deploy.png)
-
-#### 应用更新流程
-应用更新 主要是通过编排部署系统来实现，应用管理系统主要负责提供新的编排文件。
-
-1. 获取但前应用栈的应用模板以及版本信息(repo:catalog:template:version)；
-2. 获取应用模板最新版本信息；
-3. 比较两者版本信息，如果最新版本较大则执行以下操作，否则退出；
-4. 选择最新版本，并配置并生成编排文件；
-5. 编排部署应用。
-
-### 应用模板管理设计
-应用模板管理包括如下两部分：
-1. 定时同步服务端应用模板库；
-2. 根据模板库，给出模板列表以及模板详细信息，以及对外提供模板浏览接口；
-
